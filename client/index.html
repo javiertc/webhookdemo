@@ -1,0 +1,55 @@
+<html>
+<head>
+  <script src="https://cdn.jsdelivr.net/npm/web3@latest/dist/web3.min.js"></script>
+  <script src="https://cdn.onesignal.com/sdks/web/v16/OneSignalSDK.page.js" defer></script>
+  <script>
+    window.OneSignalDeferred = window.OneSignalDeferred || [];
+    OneSignalDeferred.push(function(OneSignal) {
+      OneSignal.init({
+        appId: "a63e0a25-186c-40a7-8fce-9c0fde324400",
+        safari_web_id: "web.onesignal.auto.67fef31a-7360-4fd8-9645-1463ac233cef",
+        notifyButton: {
+          enable: false,
+        },
+        allowLocalhostAsSecureOrigin: true,
+      });
+    });
+
+    window.connect = async function() {
+      console.log("aqui");
+      try {
+        // Check if Avalanche wallet is installed
+        if (!window.ethereum) {
+          throw new Error("Avalanche wallet not detected");
+        }
+        
+        // Request accounts from the Avalanche wallet
+        const accounts = await window.ethereum.request({ method: "eth_requestAccounts" });
+
+        console.log("accounts");
+        
+        // Initialize web3 with the Avalanche provider
+        window.web3 = new Web3(window.ethereum);
+        
+        // Get the selected Avalanche address and format it
+        const selectedAddress = accounts[0].toLowerCase().slice(2);
+        
+        // Log the selected address to the console
+        console.log("Selected address: ", selectedAddress);
+        
+        // Login to OneSignal with the selected address
+        OneSignal.login(selectedAddress);
+        
+        // Request permission for notifications
+        OneSignal.Notifications.requestPermission();
+      } catch (error) {
+        console.error("Error connecting to Avalanche wallet:", error.message);
+      }
+    };
+  </script>
+</head>
+<body>
+  <h1>Avalanche push notifications</h1>
+  <button onclick="window.connect()">Connect</button>
+</body>
+</html>
