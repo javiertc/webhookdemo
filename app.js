@@ -81,7 +81,7 @@ async function sendNotifications(notifications) {
                 target_channel: 'push',
                 isAnyWeb: true,
                 contents: { en: `You've received ${notification.amount} ${notification.token}` },
-                headings: { en: 'Awesome wallet' },
+                headings: { en: 'Core wallet' },
                 name: 'Notification',
                 app_id: process.env.APP_ID
             };
